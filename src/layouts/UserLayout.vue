@@ -9,25 +9,21 @@
         <div class="top">
           <div class="header">
             <a href="/">
-              <img src="~@/assets/logo.svg" class="logo" alt="logo">
-              <span class="title">Ant Design</span>
+              <img src="~@/assets/Logo_VNA.svg" class="logo" alt="logo">
             </a>
-          </div>
-          <div class="desc">
-            {{ $t('layouts.userLayout.title') }}
           </div>
         </div>
 
         <router-view />
 
         <div class="footer">
-          <div class="links">
-            <a href="_self">帮助</a>
-            <a href="_self">隐私</a>
-            <a href="_self">条款</a>
-          </div>
+          <!--          <div class="links">-->
+          <!--            <a href="_self">帮助</a>-->
+          <!--            <a href="_self">隐私</a>-->
+          <!--            <a href="_self">条款</a>-->
+          <!--          </div>-->
           <div class="copyright">
-            Copyright &copy; 2018 vueComponent
+            Copyright &copy; 2022 By DucKM
           </div>
         </div>
       </div>
@@ -95,6 +91,7 @@ export default {
 
     .user-layout-content {
       padding: 32px 0 24px;
+      margin-top: 12rem;
 
       .top {
         text-align: center;
