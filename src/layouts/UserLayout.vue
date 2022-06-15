@@ -91,7 +91,7 @@ export default {
 
     .user-layout-content {
       padding: 32px 0 24px;
-      margin-top: 12rem;
+      margin-top: 8rem;
 
       .top {
         text-align: center;
@@ -99,6 +99,7 @@ export default {
         .header {
           height: 44px;
           line-height: 44px;
+          margin-bottom: 30px;
 
           .badge {
             position: absolute;

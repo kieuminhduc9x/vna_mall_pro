@@ -1,112 +1,93 @@
 <template>
-  <blank-layout>
-    <div class="container">
-      <div class="limiter">
-        <div class="container-login">
-          <div class="wrap-login">
-            <a-row :gutter="16" style="width: 100%;">
-              <img src="~@/assets/Logo_VNA.svg" class="logo" alt="logo">
-              <a-form-modelx
-                ref="ruleFormLogin"
-                :model="form"
-                class="user-layout-login"
-              >
-                <a-form-model-item
-                  label="Tài khoản"
-                  prop="userName">
-                  <a-input
-                    size="large"
-                    type="text"
-                    :placeholder="'Tài khoản'"
-                    v-model="form.userName"
-                    style="margin-top: 15px"
-                  >
-                    <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                  </a-input>
-                </a-form-model-item>
+  <div class="main">
+    <a-form
+      ref="ruleFormLogin"
+      :form="form"
+      class="user-layout-login"
+      @submit="handleSubmit"
+    >
+      <a-form-item
+        label="Tài khoản"
+        prop="userName">
+        <a-input
+          size="large"
+          type="text"
+          :placeholder="'Tài khoản'"
+          v-decorator="['userName', { rules: [ { required: true, message: 'Tài khoản là bắt buộc'}] }]"
+        >
+          <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        </a-input>
+      </a-form-item>
 
-                <a-form-model-item
-                  label="Mật khẩu"
-                  prop="password">
-                  <a-input-password
-                    size="large"
-                    :placeholder="'Mật khẩu'"
-                    v-model="form.password"
-                    style="margin-top: 15px"
-                  >
-                    <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                  </a-input-password>
-                </a-form-model-item>
-                <a-form-model-item
-                  label="Mã xác nhận"
-                  prop="captcha"
-                >
-                  <div style="margin-top: 15px">
-                    <a-row :gutter="16">
-                      <a-col :xs="12" :md="12" :lg="12">
-                        <a-input
-                          size="large"
-                          :placeholder="'Mã xác nhận'"
-                          v-model="form.captcha"
-                        >
-                        </a-input>
-                      </a-col>
-                      <a-col :xs="12" :md="12" :lg="12">
-                        <div style="display: flex; justify-content: flex-start">
-                          <div>
-                            <img :src="captcha.captcha" style="width: 100px; height: auto" alt="">
-                          </div>
-                          <div>
-                            <a-button type="default" style="margin-left: 8px" @click="getCaptcha"><a-icon type="sync"></a-icon></a-button>
-                          </div>
-                        </div>
-                      </a-col>
-                    </a-row>
-                  </div>
-                </a-form-model-item>
-                <a-form-model-item>
-                  <a-button
-                    size="large"
-                    type="primary"
-                    htmlType="submit"
-                    class="login-button"
-                    :loading="loginBtn"
-                    :disabled="loginBtn"
-                    style="margin-top:24px"
-                    @click="handleSubmit"
-                  >Đăng nhập</a-button>
-                </a-form-model-item>
+      <a-form-item
+        label="Mật khẩu"
+        prop="password">
+        <a-input-password
+          size="large"
+          :placeholder="'Mật khẩu'"
+          v-decorator="['password', { rules: [{ required: true, message: 'Mật khẩu là bắt buộc'}] }]"
+        >
+          <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        </a-input-password>
+      </a-form-item>
+      <a-form-item
+        label="Mã xác nhận"
+        prop="captcha"
+      >
+        <a-row :gutter="16">
+          <a-col :xs="12" :md="12" :lg="12">
+            <a-input
+              size="large"
+              :placeholder="'Mã xác nhận'"
+              v-decorator="['captcha', { rules: [{ required: true, message: 'Mã xác nhận là bắt buộc'}] }]"
+            >
+            </a-input>
+          </a-col>
+          <a-col :xs="12" :md="12" :lg="12">
+            <div style="display: flex; justify-content: flex-start">
+              <div>
+                <img :src="captcha.captcha" style="width: 100px; height: auto" alt="">
+              </div>
+              <div>
+                <a-button type="default" style="margin-left: 8px" @click="getCaptcha"><a-icon type="sync"></a-icon></a-button>
+              </div>
+            </div>
+          </a-col>
+        </a-row>
+      </a-form-item>
+      <a-form-item>
+        <a-button
+          size="large"
+          type="primary"
+          htmlType="submit"
+          class="login-button"
+          :loading="loginBtn"
+          :disabled="loginBtn"
+          style="margin-top:24px"
+          @click="handleSubmit"
+        >Đăng nhập</a-button>
+      </a-form-item>
 
-              </a-form-modelx>
-            </a-row>
-          </div>
-        </div>
-      </div>
-    </div>
-  </blank-layout>
+    </a-form>
+  </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
 import { getCaptcha, login } from '@/api/login'
-import BlankLayout from '@/layouts/BlankLayout'
 
 export default {
   components: {
-    BlankLayout
   },
   data () {
     return {
       loginBtn: false,
-      form: {
-        userName: '',
-        password: '',
+      form: this.$form.createForm(this, { name: 'login' }),
+      captcha: {
         captcha: '',
         transactionId: ''
-      },
-      captcha: null
-
+      }
     }
   },
   async created () {
@@ -114,10 +95,11 @@ export default {
   },
   methods: {
     ...mapActions(['Login', 'Logout']),
-    handleSubmit () {
+    handleSubmit (e) {
+      e.preventDefault()
       console.log(1)
-      this.$refs.ruleFormLogin.validate(valid => {
-        if (valid) {
+      this.form.validateFields((err, valid) => {
+        if (!err) {
           console.log(2)
           this.loginBtn = true
           const params = {
